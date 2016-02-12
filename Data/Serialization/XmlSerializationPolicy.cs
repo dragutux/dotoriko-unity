@@ -11,7 +11,7 @@ using System;
 using System.Xml.Serialization;
 using System.IO;
 
-namespace DespairWorld.Data.Serialization
+namespace DotOriko.Data.Serialization
 {
 	public sealed class XmlSerializationPolicy:SerializationPolicy
 	{

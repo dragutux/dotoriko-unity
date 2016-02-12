@@ -1,50 +1,75 @@
-﻿using System.Collections.Generic;
+﻿///
+/// DotOriko v1.0
+/// Finite State Machine
+/// By NoxCaos 10.02.2016
+///
+
 using LinqTools;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System;
 
 namespace DotOriko.Core.FSM {
 
     internal class Transition {
-        public State from;
-        public State to;
+        public string from;
+        public string to;
 
-        public Transition(State f, State t) {
-            this.from = f;
-            this.to = t;
+		public Transition(Type f, Type t) {
+			if (f.IsSubclassOf (typeof(State)) && 
+				t.IsSubclassOf (typeof(State))) {
+				this.from = f.ToString ();
+				this.to = t.ToString ();
+			} else {
+				throw new TypeLoadException("Types of FSM should extend State");
+			}
         }
     }
 
-    public sealed class FSM {
+    public sealed class FSM : DotOrikoComponent {
         private List<Transition> transitions;
 
         private State currentState;
 
-        public FSM() { }
+		public bool IsMakingTransition { get; private set;}
+
+        public FSM() {
+			this.transitions = new List<Transition> ();
+		}
+
+		public void AddTransition<T, B>() where T:State where B:State {
+			this.AddTransition(new Transition(typeof(T), typeof(B)));
+		}
 
         internal void AddTransition(Transition t) {
-
+			this.transitions.Add (t);
         }
 
-        public bool CanMakeTransitionTo(State state) {
-            if (this.currentState == null || this.currentState.IsUniversal) return true;
+        public bool CanMakeTransitionTo(Type state) {
+            if (this.currentState == null) return true;
             else return this.transitions
-                .Where(f => f.from = this.currentState)
-                .Where(f => f.to = state) != null;
+                .Where(f => f.from == this.currentState.GetType().ToString())
+				.Where(f => f.to == state.ToString()) != null;
         }
 
-        public void ApplyState(State state) {
-            if (this.CanMakeTransitionTo(state)) {
-                
+        public void ApplyState<T>() where T : State {
+            if (this.CanMakeTransitionTo(typeof(T))) {
+				this.StartCoroutine(this.MakeTransitionTo<T>());
             } else {
                 Debug.Log(string.Format("Can't transit from {0} to {1}", 
-                    this.currentState.GetType(), state.GetType()));
+                    this.currentState.GetType(), typeof(T)));
             }
         }
 
-        private IEnumerator MakeTransitionTo(State state) {
-            yield return null;
-        }
+		internal IEnumerator MakeTransitionTo<T>() where T : State {
+			this.IsMakingTransition = true;
+			if(this.currentState != null) 
+				yield return this.StartCoroutine (this.currentState.FinishState ());
 
+			this.currentState = this.gameObject.AddComponent<T>();
+			this.currentState.FSM = this;
+			this.IsMakingTransition = false;
+        }
     }
 }

@@ -10,7 +10,7 @@
 using System;
 using System.IO;
 
-namespace DespairWorld.Data.Serialization
+namespace DotOriko.Data.Serialization
 {
 	public abstract class SerializationPolicy
 	{

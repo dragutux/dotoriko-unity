@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 using System.IO;
-using Utils;
+using DotOriko.Data.Serialization;
 
 namespace DotOriko.Data
 {
@@ -157,7 +157,7 @@ namespace DotOriko.Data
 			string filenameWithExt = GetNameWithExtension(filename);
 			#if UNITY_EDITOR
 			_path = (storage == StorageType.Documents)? 
-				GetPath( storage ) : FileUtils.CombinePath(_applicationDataPath, "Editor", "packedDocuments", "Configs");
+				GetPath( storage ) : CombinePath(_applicationDataPath, "Editor", "packedDocuments", "Configs");
 			_path = Path.Combine(_path,filenameWithExt);
 			#else
 			if(string.IsNullOrEmpty(_path))
@@ -177,6 +177,17 @@ namespace DotOriko.Data
 			{
 				serializer.Store<TConfig>((TConfig)this,stream);
 			}
+		}
+
+		public static string CombinePath(params string[] names)
+		{
+			string result = names[0];
+			
+			for (int i = 1; i < names.Length; i++)
+			{
+				result = Path.Combine(result, names[i]);
+			}
+			return result;
 		}
 	}
 }

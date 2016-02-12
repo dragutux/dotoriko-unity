@@ -9,14 +9,14 @@ namespace DotOriko.Async.SceneLoad {
         protected override void OnInitialize() {
             base.OnInitialize();
 
-            AppController.Instance.cachedScenes.Add(this.root.name, this.root);
-            if(!AppController.testMode) this.root.SetActive(false);
+            SceneManagerAsync.Instance.cachedScenes.Add(this.root.name, this.root);
+            //if(!AppController.testMode) this.root.SetActive(false);
         }
 
         protected override void OnStart() {
             base.OnStart();
 
-            AppController.Instance.cachedScenes.Remove(this.root.name);
+			SceneManagerAsync.Instance.cachedScenes.Remove(this.root.name);
         }
 
         protected override void OnUpdate() {

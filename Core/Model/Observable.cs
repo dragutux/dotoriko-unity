@@ -30,7 +30,7 @@ namespace DotOriko.Core.Model {
 		}
 
 		public void Notify() {
-			foreach (IObserver o in this.observers) o.Update();
+			foreach (IObserver o in this.observers) o.OnModelUpdate();
 		}
 	}
 }

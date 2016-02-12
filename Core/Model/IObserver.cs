@@ -6,7 +6,7 @@
 
 namespace DotOriko.Core.Model {
 	public interface IObserver {
-		void Update();
+		void OnModelUpdate();
 	}
 }
 	

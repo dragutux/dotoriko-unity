@@ -94,6 +94,7 @@ namespace DotOriko {
             }
         }
 
+		#region Utilities
         protected void RemoveAllChildren() {
             var children = new List<GameObject>();
             foreach (Transform child in this.CachedTransform) children.Add(child.gameObject);
@@ -105,5 +106,21 @@ namespace DotOriko {
             foreach (Transform child in target) children.Add(child.gameObject);
             children.ForEach(child => Destroy(child));
         }
+
+		protected void LocalMirrorByX() {
+			Vector3 oldPos = this.LocalPosition;
+			this.LocalPosition = new Vector3(-oldPos.x, oldPos.y, oldPos.z);
+		}
+		
+		protected void LocalMirrorByY() {
+			Vector3 oldPos = this.LocalPosition;
+			this.LocalPosition = new Vector3(oldPos.x, -oldPos.y, oldPos.z);
+		}
+		
+		protected void LocalMirroByXY() {
+			this.LocalMirrorByX();
+			this.LocalMirrorByY();
+		}
+		#endregion
     }
 }

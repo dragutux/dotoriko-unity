@@ -42,5 +42,29 @@ namespace DotOriko.UI {
             tr.anchoredPosition3D = Vector3.zero;
             return g;
         }
+
+		#region Utilities
+		public void SetCenterAnchors() {
+			var target = this.CachedRectTransform;
+			var size = new Vector2(target.rect.width, target.rect.height);
+			var pos = new Vector2(target.position.x, target.position.y);
+			
+			target.anchorMax = new Vector2(0.5f, 0.5f);
+			target.anchorMin = new Vector2(0.5f, 0.5f);
+			target.pivot = new Vector2(0.5f, 0.5f);
+			
+			target.sizeDelta = size;
+			target.position = pos;
+		}
+
+		public void FitToParentSize() {
+			var target = this.CachedRectTransform;
+			var parent = target.transform.parent.GetComponent<RectTransform>();
+			var parentSize = new Vector2(parent.rect.width, parent.rect.height);
+			
+			target.sizeDelta = parentSize;
+			target.localPosition = Vector2.zero;
+		}
+		#endregion
     }
 }
