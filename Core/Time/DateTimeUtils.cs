@@ -11,7 +11,7 @@ using System;
 
 namespace DotOriko.Utils 
 {
-	public static class DateUtils
+	public static class DateTimeUtils
 	{
 		static public string ToHHmmssFFF(this DateTime time)
 		{
