@@ -11,10 +11,10 @@ using DotOriko.Utils;
     Modified by NoxCaos, Feb 2016
     DotOriko 1.0
 */
-namespace DotOriko.Mesh {
+namespace DotOriko.Meshes {
     public sealed class SmoothFilter {
 
-        public static UnityEngine.Mesh GetSmoothVersionOf(UnityEngine.Mesh sourceMesh, int iterations = 1, float alpha = 0, float beta = .5f) {
+        public static Mesh GetSmoothVersionOf(Mesh sourceMesh, int iterations = 1, float alpha = 0, float beta = .5f) {
             var workingMesh = sourceMesh.Clone();
             for (int i = 0; i < iterations; i++)
                 workingMesh.vertices = HCFilter(sourceMesh.vertices, workingMesh.vertices, workingMesh.triangles, alpha, beta);

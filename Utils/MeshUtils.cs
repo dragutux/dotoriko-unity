@@ -154,7 +154,7 @@ namespace DotOriko.Utils {
         }
 
         // Clone a mesh
-        public static UnityEngine.Mesh Clone(this UnityEngine.Mesh mesh) {
+        public static Mesh Clone(this Mesh mesh) {
             var clone = new UnityEngine.Mesh();
             clone.vertices = mesh.vertices;
             clone.normals = mesh.normals;
