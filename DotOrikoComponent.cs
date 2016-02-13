@@ -42,6 +42,26 @@ namespace DotOriko {
         }
         #endregion
 
+        # region Quaternion.Euler
+        public Vector3 ERotation {
+            get {
+                return this.CachedTransform.eulerAngles;
+            }
+            set {
+                this.CachedTransform.eulerAngles = value;
+            }
+        }
+
+        public Vector3 ELocalRotation {
+            get {
+                return this.CachedTransform.localEulerAngles;
+            }
+            set {
+                this.CachedTransform.localEulerAngles = value;
+            }
+        }
+        #endregion
+
         #region Transform
         protected Transform CachedTransform {
             get {
@@ -77,6 +97,33 @@ namespace DotOriko {
         protected void StopScheduledUpdate() {
             this.StopCoroutine("SceduledUpdate_Coroutine");
         }
+
+        protected void RemoveAllChildren() {
+            var children = new List<GameObject>();
+            foreach (Transform child in this.CachedTransform) children.Add(child.gameObject);
+            children.ForEach(child => Destroy(child));
+        }
+
+        protected void RemoveAllChildren(Transform target) {
+            var children = new List<GameObject>();
+            foreach (Transform child in target) children.Add(child.gameObject);
+            children.ForEach(child => Destroy(child));
+        }
+
+        protected void LocalMirrorByX() {
+            Vector3 oldPos = this.LocalPosition;
+            this.LocalPosition = new Vector3(-oldPos.x, oldPos.y, oldPos.z);
+        }
+
+        protected void LocalMirrorByY() {
+            Vector3 oldPos = this.LocalPosition;
+            this.LocalPosition = new Vector3(oldPos.x, -oldPos.y, oldPos.z);
+        }
+
+        protected void LocalMirroByXY() {
+            this.LocalMirrorByX();
+            this.LocalMirrorByY();
+        }
         #endregion
 
         private void Start() { this.OnStart(); }
@@ -93,34 +140,5 @@ namespace DotOriko {
                 this.OnScheduledUpdate();
             }
         }
-
-		#region Utilities
-        protected void RemoveAllChildren() {
-            var children = new List<GameObject>();
-            foreach (Transform child in this.CachedTransform) children.Add(child.gameObject);
-            children.ForEach(child => Destroy(child));
-        }
-
-        protected void RemoveAllChildren(Transform target) {
-            var children = new List<GameObject>();
-            foreach (Transform child in target) children.Add(child.gameObject);
-            children.ForEach(child => Destroy(child));
-        }
-
-		protected void LocalMirrorByX() {
-			Vector3 oldPos = this.LocalPosition;
-			this.LocalPosition = new Vector3(-oldPos.x, oldPos.y, oldPos.z);
-		}
-		
-		protected void LocalMirrorByY() {
-			Vector3 oldPos = this.LocalPosition;
-			this.LocalPosition = new Vector3(oldPos.x, -oldPos.y, oldPos.z);
-		}
-		
-		protected void LocalMirroByXY() {
-			this.LocalMirrorByX();
-			this.LocalMirrorByY();
-		}
-		#endregion
     }
 }
