@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 
 namespace DotOriko.Core.Model {
-	public abstract class Observable {
+	public abstract class Observable : IObservable {
 
 		private List<IObserver> observers = new List<IObserver>();
 

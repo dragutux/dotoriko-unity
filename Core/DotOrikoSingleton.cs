@@ -12,10 +12,19 @@ namespace DotOriko.Core {
 
         protected static T _instance;
 
+        private static Transform singletoneParent;
+
         private static void CreateInstance() {
+            if(singletoneParent == null) {
+                var par = new GameObject();
+                par.name = "DotOriko Singletones";
+                singletoneParent = par.transform;
+            }
+
             var g = new GameObject();
-            g.name = typeof(T).Name + "_singletone";
+            g.name = typeof(T).ToString() + "_singletone";
             _instance = g.AddComponent<T>();
+            g.transform.SetParent(singletoneParent);
         }
 
         protected override void OnInitialize() {

@@ -27,26 +27,30 @@ namespace DotOriko.Core.Factory {
 
     }
 
-    public abstract class CachableFactory<T> where T : MonoBehaviour {
+    public abstract class CachableFactory<T> where T : Object {
 
         protected static Dictionary<FactoryType, string> typeToUrl;
 
-        private Dictionary<string, T> cachedItems;
+        private static Dictionary<string, T> cachedItems;
 
-        public virtual T GetItem(FactoryType type) {
-            return this.GetItemByLink(typeToUrl[type]);
+        public static T GetItem(string name) {
+            return GetItemByLink(string.Format("{0}/{1}", typeof(T), name));
         }
 
-        public virtual B SpawnItem<B>(FactoryType type) where B : MonoBehaviour {
-            return GameObject.Instantiate(this.GetItem(type)) as B;
+        public static T GetItem(FactoryType type) {
+            return GetItemByLink(typeToUrl[type]);
         }
 
-        private T GetItemByLink(string link) {
-            if (this.cachedItems.ContainsKey(link)) {
-                return this.cachedItems[link];
+        public static B SpawnItem<B>(FactoryType type) where B : MonoBehaviour {
+            return GameObject.Instantiate(GetItem(type)) as B;
+        }
+
+        private static T GetItemByLink(string link) {
+            if (cachedItems.ContainsKey(link)) {
+                return cachedItems[link];
             } else {
                 var item = Resources.Load(link) as T;
-                if (item != null) this.cachedItems.Add(link, item);
+                if (item != null) cachedItems.Add(link, item);
 
                 return item;
             }

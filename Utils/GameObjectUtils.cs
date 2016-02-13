@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 namespace DotOriko.Utils {
     public static class GameObjectUtils {
@@ -305,22 +304,12 @@ namespace DotOriko.Utils {
         }
 
         public static void ScaleInBack(this GameObject go, float time) {
-            go.transform.localScale = Vector3.zero;
-			go.transform.DOScale (Vector3.one, time).SetEase(Ease.InOutElastic);
-            /*iTween.ScaleTo(go, iTween.Hash(
-                "scale", Vector3.one,
-                "time", time,
-                "easetype", iTween.EaseType.easeOutBack
-            ));*/
+            //go.transform.localScale = Vector3.zero;
+			//go.transform.DOScale (Vector3.one, time).SetEase(Ease.InOutElastic);
         }
 
         public static void ScaleOutBack(this GameObject go, float time) {
-			go.transform.DOScale (Vector3.zero, time).SetEase(Ease.InOutElastic);
-            /*iTween.ScaleTo(go, iTween.Hash(
-                "scale", Vector3.zero,
-                "time", time,
-                "easetype", iTween.EaseType.easeInBack
-            ));*/
+			//go.transform.DOScale (Vector3.zero, time).SetEase(Ease.InOutElastic);
         }
 
         public static void TweenParameter(this GameObject go, string callback, float time, float from, float to) {
