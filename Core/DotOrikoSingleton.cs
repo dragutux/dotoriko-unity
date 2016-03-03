@@ -1,8 +1,23 @@
-﻿using UnityEngine;
+﻿///
+/// DotOriko v1.0
+/// Physics object controller
+/// By NoxCaos 12.02.2016
+/// 
+
+using UnityEngine;
 using System.Collections;
 
 namespace DotOriko.Core {
+    /// <summary>
+    /// Extending this class will allow you to
+    /// create an object that can be accessed like static.
+    /// See the "Singletone pattern" for details
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class DotOrikoSingleton<T> : DotOrikoComponent where T :MonoBehaviour {
+        /// <summary>
+        /// The one and only instance of object
+        /// </summary>
         public static T Instance {
             get {
                 if (_instance == null) CreateInstance();
@@ -14,11 +29,18 @@ namespace DotOriko.Core {
 
         private static Transform singletoneParent;
 
+        /// <summary>
+        /// Creates new instance if there is no any
+        /// </summary>
         private static void CreateInstance() {
+
+            //Parent for holding all the singletones 
+            //in the game
             if(singletoneParent == null) {
                 var par = new GameObject();
                 par.name = "DotOriko Singletones";
                 singletoneParent = par.transform;
+                DontDestroyOnLoad(par);
             }
 
             var g = new GameObject();
@@ -29,7 +51,6 @@ namespace DotOriko.Core {
 
         protected override void OnInitialize() {
             base.OnInitialize();
-            DontDestroyOnLoad(this);
         }
 
         protected override void OnStart() {
