@@ -82,7 +82,7 @@ namespace DotOriko.Async.SceneLoad {
             if (this.cachedScenes.ContainsKey(name)) {
                 this.cachedScenes[name].Activate();
             } else {
-                Debug.LogError("[DotOriko] SceneManager has no '" + name + "' cached");
+                Errors.Log(Errors.sceneManagerShowError, name);
             }
         }
 
@@ -90,7 +90,7 @@ namespace DotOriko.Async.SceneLoad {
             if (this.cachedScenes.ContainsKey(name)) {
                 this.cachedScenes[name].Deactivate();
             } else {
-                Debug.LogError("[DotOriko] SceneManager has no '" + name + "' cached");
+                Errors.Log(Errors.sceneManagerShowError, name);
             }
         }
 
