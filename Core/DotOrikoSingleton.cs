@@ -19,6 +19,7 @@ namespace DotOriko.Core {
                 var par = new GameObject();
                 par.name = "DotOriko Singletones";
                 singletoneParent = par.transform;
+                DontDestroyOnLoad(singletoneParent);
             }
 
             var g = new GameObject();
@@ -29,7 +30,6 @@ namespace DotOriko.Core {
 
         protected override void OnInitialize() {
             base.OnInitialize();
-            DontDestroyOnLoad(this);
         }
 
         protected override void OnStart() {

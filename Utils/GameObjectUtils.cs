@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -304,22 +305,22 @@ namespace DotOriko.Utils {
         }
 
         public static void ScaleInBack(this GameObject go, float time) {
-            //go.transform.localScale = Vector3.zero;
-			//go.transform.DOScale (Vector3.one, time).SetEase(Ease.InOutElastic);
+            go.transform.localScale = Vector3.zero;
+			go.transform.DOScale (Vector3.one, time).SetEase(Ease.InOutElastic);
         }
 
         public static void ScaleOutBack(this GameObject go, float time) {
-			//go.transform.DOScale (Vector3.zero, time).SetEase(Ease.InOutElastic);
+			go.transform.DOScale (Vector3.zero, time).SetEase(Ease.InOutElastic);
         }
 
         public static void TweenParameter(this GameObject go, string callback, float time, float from, float to) {
-            /*iTween.ValueTo(go, iTween.Hash(
+            iTween.ValueTo(go, iTween.Hash(
                 "from", from,
                 "to", to,
                 "time", time,
                 "easetype", iTween.EaseType.easeInBack,
                 "onupdate", callback
-            ));*/
+            ));
         }
     }
 }

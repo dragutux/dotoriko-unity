@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DespairWorld;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,10 +20,14 @@ namespace DotOriko.Async.SceneLoad {
 
         protected override void OnInitialize() {
             base.OnInitialize();
+
+            AppController.Instance.cachedScenes.Add(root.name, root);
         }
 
         protected override void OnStart() {
             base.OnStart();
+
+            AppController.Instance.cachedScenes.Remove(root.name);
         }
 
         protected override void OnReleaseResources() {
