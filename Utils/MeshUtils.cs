@@ -162,7 +162,6 @@ namespace DotOriko.Utils {
             clone.triangles = mesh.triangles;
             clone.uv = mesh.uv;
             clone.uv2 = mesh.uv2;
-            clone.uv2 = mesh.uv2;
             clone.bindposes = mesh.bindposes;
             clone.boneWeights = mesh.boneWeights;
             clone.bounds = mesh.bounds;
