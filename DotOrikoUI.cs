@@ -9,8 +9,20 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace DotOriko {
+    /// <summary>
+    /// Base for all UI components. If you plan 
+    /// to use gameobject in Unity UI it is better 
+    /// to attach this instead of DotOrikoComponent
+    /// </summary>
     public abstract class DotOrikoUI : DotOrikoComponent {
 
+        /// <summary>
+        /// The world canvas for UI. For better performance
+        /// set the canvas manualy. In case if there is
+        /// no canvas set, DotOriko will try to find
+        /// first canvas component in scene hierarchy
+        /// Returns null if there is no canvas found
+        /// </summary>
         public static RectTransform Canvas {
             get {
                 if (canvas == null) {
@@ -25,6 +37,11 @@ namespace DotOriko {
             }
         }
 
+        /// <summary>
+        /// Cached rectTransform of gameobject for 
+        /// optimizations. You can also use Transform
+        /// casting because RectTransform extends Transform
+        /// </summary>
         public RectTransform CachedRectTransform {
             get {
                 if (!this.rectTransform) this.rectTransform = this.GetComponent<RectTransform>();

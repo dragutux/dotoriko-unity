@@ -146,7 +146,7 @@ namespace DotOriko.Data
 			
 			TSerializationPolicy serializer = new TSerializationPolicy();
 			
-			using(Stream stream = File.Open(_path, FileMode.Create, FileAccess.Write))
+			using(Stream stream = File.Open(_path, FileMode.Create))
 			{
 				serializer.Store<TConfig>((TConfig)this,stream);
 			}
@@ -173,7 +173,7 @@ namespace DotOriko.Data
 			
 			TSerializationPolicy serializer = new TSerializationPolicy();
 			
-			using(Stream stream = File.Open(_path, FileMode.Create, FileAccess.Write))
+			using(Stream stream = File.Open(_path, FileMode.Create))
 			{
 				serializer.Store<TConfig>((TConfig)this,stream);
 			}

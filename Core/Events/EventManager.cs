@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using DotOriko.Core;
+
 /**
  * Event System
  * Gives ability to subscribe on events, and to trigger them later
@@ -12,14 +14,14 @@ using System.Collections.Generic;
  * @year 2015
  * @licence MIT
  */
-namespace DotOriko.Core.EventSystem {
+namespace DotOriko.Core.Events {
 
     /**
      * Event Manager
      * You can subscribe to events and trigger them
      * @depends System.Action, System.Collections.Generic.Dictionary
      */
-    public class EventManager {
+    public class EventManager : DotOrikoSingleton<EventManager> {
 
         /**
          * Stores all information about event and handlers

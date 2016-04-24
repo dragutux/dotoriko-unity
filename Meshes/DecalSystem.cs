@@ -29,7 +29,7 @@ namespace DotOriko.Meshes {
             var filter = path.AddComponent<MeshFilter>();
             path.AddComponent<MeshRenderer>();
             path.name = decalName;
-            path.renderer.material = lineMaterial;
+            path.GetComponent<Renderer>().material = lineMaterial;
             filter.mesh = this.GenerateMesh(points, mask);
             this.decals.Add(decalName, path);
             return path;
