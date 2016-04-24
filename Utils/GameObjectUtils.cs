@@ -46,20 +46,20 @@ namespace DotOriko.Utils {
                 return;
             }
 
-            if (null != gameObject.renderer) {
-                if (!gameObject.renderer.material.HasProperty("_Color"))
+            if (null != gameObject.GetComponent<Renderer>()) {
+                if (!gameObject.GetComponent<Renderer>().material.HasProperty("_Color"))
                     return;
 
-                color = gameObject.renderer.material.color;
+                color = gameObject.GetComponent<Renderer>().material.color;
                 color.a = alpha;
-                gameObject.renderer.material.color = color;
+                gameObject.GetComponent<Renderer>().material.color = color;
                 return;
             }
 
-            if (null != gameObject.guiTexture) {
-                color = gameObject.guiTexture.color;
+            if (null != gameObject.GetComponent<GUITexture>()) {
+                color = gameObject.GetComponent<GUITexture>().color;
                 color.a = alpha;
-                gameObject.guiTexture.color = color;
+                gameObject.GetComponent<GUITexture>().color = color;
                 return;
             }
         }
@@ -83,7 +83,7 @@ namespace DotOriko.Utils {
         public static ArrayList getAnimationsNames(GameObject gameObject) {
             ArrayList names = new ArrayList();
 
-            foreach (AnimationState animationState in gameObject.animation) {
+            foreach (AnimationState animationState in gameObject.GetComponent<Animation>()) {
                 names.Add(animationState.name);
             }
 
