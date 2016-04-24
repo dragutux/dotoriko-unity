@@ -1,4 +1,10 @@
-﻿using System;
+﻿///
+/// DotOriko v1.0
+/// Physics object controller
+/// By Inlife 24.04.2016
+/// 
+
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;

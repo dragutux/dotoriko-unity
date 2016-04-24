@@ -1,3 +1,9 @@
+///
+/// DotOriko v1.0
+/// Physics object controller
+/// By Inlife 24.04.2016
+/// 
+
 using System;
 using System.Net;
 using System.IO;
@@ -14,6 +20,7 @@ namespace DotOriko.Network {
 
         public void Connect(string ip, int port) {
             this.handler.Connect(ip, port);
+//            this.handler.Send(new ConnectionRequest("asd", "123"));
         }
 
         public void Send(PacketBase packet, string protocol) {
