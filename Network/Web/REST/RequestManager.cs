@@ -4,26 +4,18 @@ using System.IO;
 using System.Collections;
 using UnityEngine;
 
-namespace DotOriko.Network.Rest {
-    public class RequestManager : DotOrikoComponent {
+using DotOriko.Core;
 
-        private WebAsync asyncRequest;
+namespace DotOriko.Network.Web.REST {
+    public class RequestManager : DotOrikoSingleton<RequestManager> {
 
-        public Action<string> OnRequestSuccess;
-        public Action<string> OnRequestFailed;
+        private WebAsync asyncRequest = new WebAsync();
 
-        public static RequestManager Init() {
-            var obj = new GameObject();
-            obj.name = "[DotOriko] Request Manager";
-            var rm = obj.AddComponent<RequestManager>();
-            return rm;
-        }
-
-        public void GET(string url) {
+        public void GET(string url, Action<int, string> callback) {
             var request = WebRequest.Create(url);
             request.Method = "GET";
 
-            this.StartCoroutine(this.MakeRequest(request));
+            this.StartCoroutine(this.MakeRequest(request, callback));
         }
 
         public void POST(string url) {
@@ -32,7 +24,7 @@ namespace DotOriko.Network.Rest {
             throw new NotImplementedException();
         }
 
-        private IEnumerator MakeRequest(WebRequest request) {
+        private IEnumerator MakeRequest(WebRequest request, Action<int, string> callback) {
             var en = asyncRequest.GetResponse(request);
             while (en.MoveNext()) { yield return en.Current; }
 
@@ -47,9 +39,12 @@ namespace DotOriko.Network.Rest {
 
                     byte[] result = stream.ToArray();
                     var str = System.Text.Encoding.UTF8.GetString(result);
-                    if (this.OnRequestSuccess != null) this.OnRequestSuccess(str);
+                    
+                    // send success response
+                    callback(0, str);
                 } catch (Exception e) {
-                    if(this.OnRequestFailed != null) this.OnRequestFailed(e.Message);
+                    // send error response
+                    callback(1, e.Message);
                 }
             }
         }
