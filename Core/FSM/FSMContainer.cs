@@ -14,6 +14,7 @@ namespace DotOriko.Core.FSM {
 			base.OnStart ();
 
 			this.stateMachine = this.gameObject.AddComponent<FSM> ();
+            this.stateMachine.container = this;
 		}
 	}
 }

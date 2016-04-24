@@ -31,7 +31,7 @@ namespace DotOriko.Components {
         }
 
         protected override void OnUpdate() {
-            if (this.Target /*&& !Controller.instance.isPaused*/) {
+            if (this.Target && !Controller.instance.isPaused) {
                 this.x += Input.GetAxis("Mouse X") * 5;
                 this.y -= Input.GetAxis("Mouse Y") * 5;
                 this.y = Mathf.Clamp(this.y, -40, 60);
@@ -46,7 +46,7 @@ namespace DotOriko.Components {
                 if (UnityEngine.Physics.Linecast(this.Position, this.camera.position, out hit, layerMask)) {
                     dist = Vector3.Distance(this.Position, hit.point);
                 } else this.distance = dist;
-                this.distance = Mathf.Clamp(this.distance, 3, 10);
+                this.distance = Mathf.Clamp(this.distance, 3, 30);
 
                 var newPos = new Vector3(0, this.height, -dist);
                 this.camera.localPosition = Vector3.Lerp(this.camera.localPosition, newPos, Time.deltaTime * 10);
