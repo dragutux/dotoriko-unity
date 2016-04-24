@@ -1,5 +1,4 @@
 ﻿namespace DotOriko.Network.Packets {
-
     public abstract class PacketBase {
         protected PacketType type;
         protected string protocol = "tcp";

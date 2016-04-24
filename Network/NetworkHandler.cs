@@ -8,7 +8,7 @@ using DotOriko.Network.Packets;
 
 namespace DotOriko.Network {
 
-    public class NetworkHandler {
+    internal class NetworkHandler {
         private bool isSocketRunning;
         private NetworkStream networkStream;
         private StreamWriter streamWriter;
