@@ -31,7 +31,7 @@ namespace DotOriko.Components {
         }
 
         protected override void OnUpdate() {
-            if (this.Target && !Controller.instance.isPaused) {
+            if (this.Target) {
                 this.x += Input.GetAxis("Mouse X") * 5;
                 this.y -= Input.GetAxis("Mouse Y") * 5;
                 this.y = Mathf.Clamp(this.y, -40, 60);
