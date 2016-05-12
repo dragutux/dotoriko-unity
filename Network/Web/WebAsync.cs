@@ -4,11 +4,11 @@ using System.Threading;
 using System.Collections;
 using UnityEngine;
 
-namespace DotOriko.Network {
+namespace DotOriko.Network.Web {
     /// <summary>
     ///  The RequestState class passes data across async calls.
     /// </summary>
-    public class RequestState {
+    internal class RequestState {
         public WebRequest webRequest;
         public WebResponse webResponse;
         public string errorMessage;
@@ -23,7 +23,7 @@ namespace DotOriko.Network {
     /// <summary>
     /// Simplify getting web requests asynchronously
     /// </summary>
-    public class WebAsync {
+    internal class WebAsync {
         const int TIMEOUT = 10; // seconds
 
         public bool isResponseCompleted = false;

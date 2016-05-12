@@ -32,15 +32,20 @@ namespace DotOriko.Core.FSM {
 
         private State currentState;
 
+        public FSMContainer container { get; internal set;}
 		public bool IsMakingTransition { get; private set;}
 
         public FSM() {
 			this.transitions = new List<Transition> ();
 		}
 
-		public void AddTransition<T, B>() where T:State where B:State {
+        internal void AddTransition<T, B>() where T:State where B:State {
 			this.AddTransition(new Transition(typeof(T), typeof(B)));
 		}
+
+        internal void AddTransitions(params Transition[] transitions) {
+            foreach(var t in transitions) this.AddTransition(t);
+        }
 
         internal void AddTransition(Transition t) {
 			this.transitions.Add (t);
@@ -53,21 +58,22 @@ namespace DotOriko.Core.FSM {
 				.Where(f => f.to == state.ToString()) != null;
         }
 
-        public void ApplyState<T>() where T : State {
+        public void ApplyState<T>(params object[] args) where T : State {
             if (this.CanMakeTransitionTo(typeof(T))) {
-				this.StartCoroutine(this.MakeTransitionTo<T>());
+				this.StartCoroutine(this.MakeTransitionTo<T>(args));
             } else {
                 Debug.Log(string.Format("Can't transit from {0} to {1}", 
                     this.currentState.GetType(), typeof(T)));
             }
         }
 
-		internal IEnumerator MakeTransitionTo<T>() where T : State {
+		internal IEnumerator MakeTransitionTo<T>(object[] args) where T : State {
 			this.IsMakingTransition = true;
 			if(this.currentState != null) 
 				yield return this.StartCoroutine (this.currentState.FinishState ());
 
 			this.currentState = this.gameObject.AddComponent<T>();
+            this.currentState.SetArgs(args);
 			this.currentState.FSM = this;
 			this.IsMakingTransition = false;
         }

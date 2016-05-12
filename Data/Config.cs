@@ -43,10 +43,35 @@ namespace DotOriko.Data
 		public virtual void OnRestored()
 		{
 		}
+
+		public static Stream GenerateStreamFromString(string s)
+		{
+			MemoryStream stream = new MemoryStream();
+			StreamWriter writer = new StreamWriter(stream);
+			writer.Write(s);
+			writer.Flush();
+			stream.Position = 0;
+			return stream;
+		}
 		
 		public static TConfig Load(StorageType storage, string name) 
 		{
 			return Load(Path.Combine(GetPath(storage), GetNameWithExtension(name)));
+		}
+
+		public static TConfig Load(TextAsset asset){
+			TSerializationPolicy serializer = new TSerializationPolicy();
+			TConfig config = null;
+
+			using(Stream stream = GenerateStreamFromString(asset.text))
+			{
+				config = serializer.Restore<TConfig>(stream);
+			}
+
+			config._path = asset.name;
+			config.OnRestored();
+
+			return config;
 		}
 		
 		private static TConfig Load(StorageType storage, string name, MemoryStream stream) 
@@ -146,7 +171,7 @@ namespace DotOriko.Data
 			
 			TSerializationPolicy serializer = new TSerializationPolicy();
 			
-			using(Stream stream = File.Open(_path, FileMode.Create, FileAccess.Write))
+			using(Stream stream = File.Open(_path, FileMode.Create))
 			{
 				serializer.Store<TConfig>((TConfig)this,stream);
 			}
@@ -173,7 +198,7 @@ namespace DotOriko.Data
 			
 			TSerializationPolicy serializer = new TSerializationPolicy();
 			
-			using(Stream stream = File.Open(_path, FileMode.Create, FileAccess.Write))
+			using(Stream stream = File.Open(_path, FileMode.Create))
 			{
 				serializer.Store<TConfig>((TConfig)this,stream);
 			}
