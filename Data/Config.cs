@@ -29,19 +29,19 @@ namespace DotOriko.Data {
             if (type == StorageType.Resources) {
                 TextAsset tAsset = null;
                 try {
-                    tAsset = Resources.Load(Path.Combine(CONFIGS_FOLDER, name + EXTENTION)) as TextAsset;
+                    tAsset = Resources.Load(CONFIGS_FOLDER + "/" + name) as TextAsset;
                 } catch (Exception e) {
-                    Errors.Log("[DotOriko.Data Config] EXCEPTION: {1}", e.Message);
+                    Errors.Log("[Data Config] EXCEPTION: {0}", e.Message);
                 }
                 return Load(tAsset);
             } else if (type == StorageType.Documents) {
                 TConfig config = null;
                 try {
-                    var data = File.ReadAllText(Path.Combine(GetDocumentsPath(), name));
+                    var data = File.ReadAllText(Path.Combine(GetDocumentsPath(), name + EXTENTION));
                     config = JsonConvert.DeserializeObject<TConfig>(data);
                     config.OnRestored();
                 } catch (IOException e) {
-                    Errors.Log("[DotOriko.Data Config] EXCEPTION: {1}", e.Message);
+                    Errors.Log("[Data Config] EXCEPTION: {0}", e.Message);
                 }
                 return config;
             }
@@ -55,7 +55,7 @@ namespace DotOriko.Data {
                 config = JsonConvert.DeserializeObject<TConfig>(asset.text);
                 config.OnRestored();
             } catch (Exception e) {
-                Errors.Log("[DotOriko.Data Config] EXCEPTION: {1}", e.Message);
+                Errors.Log("[Data Config] EXCEPTION: {0}", e.Message);
             }
 
             return config;
@@ -67,7 +67,8 @@ namespace DotOriko.Data {
 
 #if UNITY_EDITOR
             _documentsPath = Path.Combine(Application.dataPath, "..");
-            _documentsPath = Path.Combine(_documentsPath, "Data/");
+            _documentsPath = Path.Combine(_documentsPath, "Data");
+            _documentsPath = Path.Combine(_documentsPath, CONFIGS_FOLDER);
             Directory.CreateDirectory(_documentsPath);
 #else
 		    _documentsPath = Application.persistentDataPath;
@@ -84,7 +85,7 @@ namespace DotOriko.Data {
             try {
                 File.WriteAllText(Path.Combine(GetDocumentsPath(), _name + EXTENTION), GetJson());
             } catch (IOException e) {
-                Errors.Log("[DotOriko.Data Config] EXCEPTION: {1}", e.Message);
+                Errors.Log("[Data Config] EXCEPTION: {0}", e.Message);
             }
         }
     }
