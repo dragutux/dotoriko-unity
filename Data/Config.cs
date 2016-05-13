@@ -12,7 +12,7 @@ namespace DotOriko.Data {
 
     public abstract class Config<TConfig> where TConfig : Config<TConfig> {
 
-        public const string CONFIGS_FOLDER = "Configs/";
+        public const string CONFIGS_FOLDER = "Configs";
         public const string EXTENTION = ".json";
 
         private static string _documentsPath;
@@ -20,7 +20,7 @@ namespace DotOriko.Data {
         private string _name;
 
         public Config(string name) {
-            _name = CONFIGS_FOLDER + name + EXTENTION;
+            _name = Path.Combine(CONFIGS_FOLDER, name + EXTENTION);
         }
 
         public virtual void OnRestored() { }
@@ -29,7 +29,7 @@ namespace DotOriko.Data {
             if (type == StorageType.Resources) {
                 TextAsset tAsset = null;
                 try {
-                    tAsset = Resources.Load(CONFIGS_FOLDER + name + EXTENTION) as TextAsset;
+                    tAsset = Resources.Load(Path.Combine(CONFIGS_FOLDER, name + EXTENTION)) as TextAsset;
                 } catch (Exception e) {
                     Errors.Log("[DotOriko.Data Config] EXCEPTION: {1}", e.Message);
                 }
@@ -37,7 +37,7 @@ namespace DotOriko.Data {
             } else if (type == StorageType.Documents) {
                 TConfig config = null;
                 try {
-                    var data = File.ReadAllText(Application.persistentDataPath + name);
+                    var data = File.ReadAllText(Path.Combine(GetDocumentsPath(), name));
                     config = JsonConvert.DeserializeObject<TConfig>(data);
                     config.OnRestored();
                 } catch (IOException e) {
@@ -70,7 +70,7 @@ namespace DotOriko.Data {
             _documentsPath = Path.Combine(_documentsPath, "Data/");
             Directory.CreateDirectory(_documentsPath);
 #else
-		_documentsPath = Application.persistentDataPath;
+		    _documentsPath = Application.persistentDataPath;
 #endif
 
             return _documentsPath;
@@ -80,9 +80,9 @@ namespace DotOriko.Data {
             return JsonConvert.SerializeObject(this);
         }
 
-        public void Save(StorageType storage) {
+        public void Save() {
             try {
-                File.WriteAllText(GetDocumentsPath() + _name + EXTENTION, GetJson());
+                File.WriteAllText(Path.Combine(GetDocumentsPath(), _name + EXTENTION), GetJson());
             } catch (IOException e) {
                 Errors.Log("[DotOriko.Data Config] EXCEPTION: {1}", e.Message);
             }

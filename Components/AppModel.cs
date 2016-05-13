@@ -4,14 +4,8 @@ using DotOriko.Data;
 using DotOriko.Data.Serialization;
 
 namespace DotOriko.Components {
-	public sealed class AppModel : Config<AppModel, JSonSerializationPolicy> {
+	public sealed class AppModel : Config<AppModel> {
 	    public const string FILE_NAME = "usersave";
-
-	    /*public static AppModel Instance {
-	        get {
-	            return AppController.Instance.Model;
-	        }
-	    }*/
 
 	    public AppModel() : base(FILE_NAME) {
 	        this.playerData = new PlayerData();
@@ -21,11 +15,6 @@ namespace DotOriko.Components {
 	    public PlayerData playerData { get; set; }
 
 	    public Settings settings { get; set; }
-
-	    public void Save() {
-	        Save(StorageType.Documents, FILE_NAME);
-	    }
-
 	}
 
 	public class PlayerData {
