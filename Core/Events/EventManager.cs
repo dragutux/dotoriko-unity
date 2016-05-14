@@ -44,11 +44,23 @@ namespace DotOriko.Core.Events {
          * @param {Action<Event>} callback - Callback anonymous function 
          * @return {void}
          */
-        public void On(string name, Action<IEvent> callback) {
+        public int On(string name, Action<IEvent> callback) {
             if (!this.__register.ContainsKey(name)) {
                 this.__register[name] = new List<Action<IEvent>>();
             }
             this.__register[name].Add(callback);
+            return this.__register[name].IndexOf(callback);
+        }
+
+        public void RemoveEvent(string name) {
+            this.__register.Remove(name);
+        }
+
+        public void RemoveHandler(int handler, string evnt) {
+            this.__register[evnt].RemoveAt(handler);
+            if(this.__register[evnt].Count <= 0) {
+                this.__register.Remove(evnt);
+            }
         }
         
         /**
