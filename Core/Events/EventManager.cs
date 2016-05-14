@@ -51,13 +51,19 @@ namespace DotOriko.Core.Events {
         }
 
         public void RemoveEvent(string name) {
-            this.__register.Remove(name);
+            if (this.__register.ContainsKey(name)) {
+                this.__register.Remove(name);
+            }
         }
 
         public void RemoveHandler(int handler, string evnt) {
-            this.__register[evnt].RemoveAt(handler);
-            if(this.__register[evnt].Count <= 0) {
-                this.__register.Remove(evnt);
+            if (this.__register.ContainsKey(evnt)) {
+                if (this.__register[evnt].Count > handler) {
+                    this.__register[evnt].RemoveAt(handler);
+                    if (this.__register[evnt].Count <= 0) {
+                        this.__register.Remove(evnt);
+                    }
+                }
             }
         }
         
