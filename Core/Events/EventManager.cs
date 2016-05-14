@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-using DotOriko.Core;
-
 /**
  * Event System
  * Gives ability to subscribe on events, and to trigger them later
@@ -27,14 +25,14 @@ namespace DotOriko.Core.Events {
          * Stores all information about event and handlers
          * @property
          */
-        private Dictionary<string, List<Action<IEvent>>> __register;
+        private Dictionary<string, List<Action<object[]>>> __register;
 
         /**
          * Creates Manager entity
          * @constructor
          */
         public EventManager() {
-            this.__register = new Dictionary<string, List<Action<IEvent>>>();
+            this.__register = new Dictionary<string, List<Action<object[]>>>();
         }
 
         /**
@@ -44,9 +42,9 @@ namespace DotOriko.Core.Events {
          * @param {Action<Event>} callback - Callback anonymous function 
          * @return {void}
          */
-        public int On(string name, Action<IEvent> callback) {
+        public int On(string name, Action<object[]> callback) {
             if (!this.__register.ContainsKey(name)) {
-                this.__register[name] = new List<Action<IEvent>>();
+                this.__register[name] = new List<Action<object[]>>();
             }
             this.__register[name].Add(callback);
             return this.__register[name].IndexOf(callback);
@@ -80,9 +78,9 @@ namespace DotOriko.Core.Events {
          * @param {Event} e - Event that will be passed to handler
          * @return {void}
          */
-        public void Trigger(string name, IEvent data) {
+        public void Trigger(string name, params object[] data) {
             if (this.__register.ContainsKey(name)) {
-                foreach (Action<IEvent> callback in this.__register[name]) {
+                foreach (Action<object[]> callback in this.__register[name]) {
                     callback(data);
                 }
             }
