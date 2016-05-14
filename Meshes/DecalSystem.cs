@@ -59,19 +59,44 @@ namespace DotOriko.Meshes {
             }
         }
 
-        private Mesh GenerateMesh(List<Vector3> points, LayerMask mask) {
+        public Mesh GenerateMesh(List<Vector3> points, LayerMask mask) {
             var mesh = new Mesh();
             var normals = new List<Vector3>();
-            var vts = this.ConvertPointsToVerts(points).ToArray();
+            var vts = ConvertPointsToVerts(points).ToArray();
             SetPointsOnSurface(vts, mask, Vector3.up);
 
             mesh.vertices = vts;
-            mesh.triangles = this.GenerateTriangles(vts);
+            mesh.triangles = GenerateTriangles(vts);
             mesh.normals = normals.ToArray();
             return mesh;
         }
 
-        private List<Vector3> ConvertPointsToVerts(List<Vector3> points) {
+        #region StaticUtils
+        public static List<Vector3> GenerateVertSegment(Vector3 from, Vector3 to) {
+            var verts = new List<Vector3>();
+            int segments = Mathf.RoundToInt(Vector3.Distance(from, to));
+            Vector3 vec = (to - from).normalized;
+            for (int j = 0; j < segments; j++) {
+                var p = from + (vec * j);
+
+                var dir = (p - to).normalized;
+                dir = Quaternion.Euler(0, -90, 0) * dir;
+
+                if (j > 1) {
+                    var v1 = verts[verts.Count - 2];
+                    var v2 = verts[verts.Count - 1];
+                    verts.Add(new Vector3(v1.x, v1.y, v1.z));
+                    verts.Add(new Vector3(v2.x, v2.y, v2.z));
+                }
+
+                verts.Add(new Vector3(p.x, p.y, p.z) + dir);
+                verts.Add(new Vector3(p.x, p.y, p.z) - dir);
+            }
+
+            return verts;
+        }
+
+        public static List<Vector3> ConvertPointsToVerts(List<Vector3> points) {
             var verts = new List<Vector3>();
 
             for (int i = 0; i < points.Count - 1; i++) {
@@ -96,7 +121,7 @@ namespace DotOriko.Meshes {
             return verts;
         }
 
-        private int[] GenerateTriangles(Vector3[] verts) {
+        public static int[] GenerateTriangles(Vector3[] verts) {
             var tri = new List<int>();
             for (int i = 0; i < verts.Length; i += 4) {
                 tri.Add(i);
@@ -107,6 +132,26 @@ namespace DotOriko.Meshes {
                 tri.Add(i + 1);
             }
             return tri.ToArray();
+        }
+
+        public static int[] GenerateTriangles(List<Vector3> verts) {
+            return GenerateTriangles(verts.ToArray());
+        }
+
+        public static List<Vector3> SetPointsOnSurface(List<Vector3> points, LayerMask mask) {
+            var list = new List<Vector3>();
+            for (int i = 0; i < points.Count; i++) {
+                var p = new Vector3();
+                p.x = points[i].x;
+                p.y = 1000;
+                p.z = points[i].z;
+                RaycastHit hit;
+                if (Physics.Raycast(p, -Vector3.up, out hit, mask.value)) {
+                    p.y = hit.point.y + .5f;
+                } else p.y = points[i].y;
+                list.Add(p);
+            }
+            return list;
         }
 
         public static List<Vector3> SetPointsOnSurface(Vector3[] points, LayerMask mask, Vector3 refSide) {
@@ -122,5 +167,6 @@ namespace DotOriko.Meshes {
             }
             return list;
         }
+        #endregion
     }
 }
