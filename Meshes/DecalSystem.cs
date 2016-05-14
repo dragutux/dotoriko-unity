@@ -71,6 +71,7 @@ namespace DotOriko.Meshes {
             return mesh;
         }
 
+        #region StaticUtils
         public static List<Vector3> GenerateVertSegment(Vector3 from, Vector3 to) {
             var verts = new List<Vector3>();
             int segments = Mathf.RoundToInt(Vector3.Distance(from, to));
@@ -166,5 +167,6 @@ namespace DotOriko.Meshes {
             }
             return list;
         }
+        #endregion
     }
 }
