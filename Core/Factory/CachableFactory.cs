@@ -27,7 +27,14 @@ namespace DotOriko.Core.Factory {
         }
 
         public static B SpawnItem<B>(N type) where B : MonoBehaviour {
-            return GameObject.Instantiate(GetItem(type)) as B;
+            return UnityEngine.Object.Instantiate(GetItem(type)) as B;
+        }
+
+        public static void ClearCache() {
+            foreach(var l in cachedItems) {
+                Resources.UnloadAsset(l.Value);
+            }
+            cachedItems.Clear();
         }
 
         private static T GetItemByLink(string link) {
