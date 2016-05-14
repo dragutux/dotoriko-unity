@@ -83,7 +83,7 @@ namespace DotOriko.Data {
 
         public void Save() {
             try {
-                File.WriteAllText(Path.Combine(GetDocumentsPath(), _name + EXTENTION), GetJson());
+                File.WriteAllText(Path.Combine(GetDocumentsPath(), _name), GetJson());
             } catch (IOException e) {
                 Errors.Log("[Data Config] EXCEPTION: {0}", e.Message);
             }
