@@ -20,7 +20,7 @@ namespace DotOriko.Data {
         private string _name;
 
         public Config(string name) {
-            _name = Path.Combine(CONFIGS_FOLDER, name + EXTENTION);
+            _name = name + EXTENTION;
         }
 
         public virtual void OnRestored() { }
