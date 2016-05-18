@@ -20,7 +20,7 @@ namespace DotOriko.Data {
         private string _name;
 
         public Config(string name) {
-            _name = Path.Combine(CONFIGS_FOLDER, name + EXTENTION);
+            _name = name + EXTENTION;
         }
 
         public virtual void OnRestored() { }
@@ -31,7 +31,7 @@ namespace DotOriko.Data {
                 try {
                     tAsset = Resources.Load(CONFIGS_FOLDER + "/" + name) as TextAsset;
                 } catch (Exception e) {
-                    Errors.Log("[Data Config] EXCEPTION: {0}", e.Message);
+                    Errors.Log("[Data Config Load] EXCEPTION: {0}", e.Message);
                 }
                 return Load(tAsset);
             } else if (type == StorageType.Documents) {
@@ -41,7 +41,7 @@ namespace DotOriko.Data {
                     config = JsonConvert.DeserializeObject<TConfig>(data);
                     config.OnRestored();
                 } catch (IOException e) {
-                    Errors.Log("[Data Config] EXCEPTION: {0}", e.Message);
+                    Errors.Log("[Data Config Load] EXCEPTION: {0}", e.Message);
                 }
                 return config;
             }
@@ -55,7 +55,7 @@ namespace DotOriko.Data {
                 config = JsonConvert.DeserializeObject<TConfig>(asset.text);
                 config.OnRestored();
             } catch (Exception e) {
-                Errors.Log("[Data Config] EXCEPTION: {0}", e.Message);
+                Errors.Log("[Data Config Convert] EXCEPTION: {0}", e.Message);
             }
 
             return config;
@@ -83,7 +83,7 @@ namespace DotOriko.Data {
 
         public void Save() {
             try {
-                File.WriteAllText(Path.Combine(GetDocumentsPath(), _name + EXTENTION), GetJson());
+                File.WriteAllText(Path.Combine(GetDocumentsPath(), _name), GetJson());
             } catch (IOException e) {
                 Errors.Log("[Data Config] EXCEPTION: {0}", e.Message);
             }
