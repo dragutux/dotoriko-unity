@@ -50,6 +50,10 @@ namespace DotOriko.Core {
             g.transform.SetParent(singletoneParent);
         }
 
+		public static bool IsInstanceExists() {
+			return _instance != null;
+		}
+
         protected override void OnInitialize() {
             base.OnInitialize();
         }

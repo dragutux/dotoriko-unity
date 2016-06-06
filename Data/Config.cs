@@ -36,13 +36,9 @@ namespace DotOriko.Data {
                 return Load(tAsset);
             } else if (type == StorageType.Documents) {
                 TConfig config = null;
-                try {
-                    var data = File.ReadAllText(Path.Combine(GetDocumentsPath(), name + EXTENTION));
-                    config = JsonConvert.DeserializeObject<TConfig>(data);
-                    config.OnRestored();
-                } catch (IOException e) {
-                    Errors.Log("[Data Config Load] EXCEPTION: {0}", e.Message);
-                }
+				var data = File.ReadAllText(Path.Combine(GetDocumentsPath(), name + EXTENTION));
+				config = JsonConvert.DeserializeObject<TConfig>(data);
+				config.OnRestored();
                 return config;
             }
             return null;
