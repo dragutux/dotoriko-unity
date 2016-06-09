@@ -147,7 +147,7 @@ namespace DotOriko.Meshes {
                 p.z = points[i].z;
                 RaycastHit hit;
                 if (Physics.Raycast(p, -Vector3.up, out hit, mask.value)) {
-                    p.y = hit.point.y + .5f;
+                    p.y = hit.point.y + .1f;
                 } else p.y = points[i].y;
                 list.Add(p);
             }

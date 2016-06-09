@@ -45,9 +45,10 @@ namespace DotOriko.Core {
             }
 
             var g = new GameObject();
-            g.name = typeof(T).ToString() + "_singletone";
+            g.name = typeof(T).ToString() + "_singleton";
             _instance = g.AddComponent<T>();
             g.transform.SetParent(singletoneParent);
+            print("Initialized singleton");
         }
 
 		public static bool IsInstanceExists() {
