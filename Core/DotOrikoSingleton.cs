@@ -37,11 +37,17 @@ namespace DotOriko.Core {
             //Parent for holding all the singletones 
             //in the game
             if(singletoneParent == null) {
-                var par = new GameObject();
-                par.name = "DotOriko Singletones";
-                singletoneParent = par.transform;
+                var instance = GameObject.Find("DotOriko Singletones");
 
-                DontDestroyOnLoad(singletoneParent);
+                if (instance) {
+                    singletoneParent = instance.transform;
+                } else {
+                    var par = new GameObject();
+                    par.name = "DotOriko Singletones";
+                    singletoneParent = par.transform;
+
+                    DontDestroyOnLoad(singletoneParent);
+                }
             }
 
             var g = new GameObject();
