@@ -130,6 +130,14 @@ namespace DotOriko.Core.Events {
         public void RemoveForEventByObject(string eventName, UnityEngine.Object localObject) {
             this.RemoveForEventById(eventName, localObject.GetInstanceID());
         }
+
+        /**
+         * Clear event handler (USE CAREFULLY)
+         * @warning
+         */
+        public void Clear() {
+            this.__register = new Dictionary<string, Dictionary<int, List<Action<object[]>>>>();
+        }
         
         /**
          * Triggers the event, by it's eventName, default event object will be passed to callback
