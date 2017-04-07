@@ -1,6 +1,5 @@
 ﻿using DotOriko.Core.Events;
 using UnityEngine;
-using Yandere.Character;
 
 namespace DotOriko.Components {
     public sealed class ThirdPersonCamera : DotOrikoComponent {
@@ -37,7 +36,6 @@ namespace DotOriko.Components {
         public LayerMask playerMask;
 
         private Transform dialogTarget;
-        private CharacterMovement ch;
 
         protected override void OnStart() {
             camera = CachedTransform.FindChild("Camera");
@@ -50,15 +48,8 @@ namespace DotOriko.Components {
         }
 
         protected override void OnUpdate() {
-            if (Cursor.lockState == CursorLockMode.None) {
-                if (isDialogMode) {
-                    camera.rotation = dialogTarget.rotation;
-                    camera.position = Vector3.Lerp(camera.position, dialogTarget.position, Time.deltaTime * 5);
-                }
-                return;
-            }
-
-            if (Input.GetKeyUp(KeyCode.Tab)) isFirstPerson = !isFirstPerson;
+            if (Input.GetMouseButtonUp(0)) Cursor.lockState = CursorLockMode.Locked;
+            else if (Cursor.lockState == CursorLockMode.None) return;
 
             if (Target) {
                 x += Input.GetAxis("Mouse X") * 5;
@@ -77,20 +68,12 @@ namespace DotOriko.Components {
                 if (Physics.Linecast(Position, tgPos, out hit, layerMask)) {
                     dist = Vector3.Distance(Position, hit.point + camera.forward * .2f);
                 } else distance = dist;
-                distance = Mathf.Clamp(distance, 1.5f, 3);
+                distance = Mathf.Clamp(distance, 2f, 8f);
 
                 bool fps = false;
                 if (dist < 1.2f) fps = true;
 
                 var curHeight = height;
-                if (fps || isFirstPerson) {
-                    dist = -0.07f;
-                    yLerpSpeed = 50;
-                    curHeight = .1f;
-                    followTarget = ch.Head;
-
-                    if (!isRotateCharacter) Rotation = followTarget.rotation;
-                } else followTarget = ch.Hips;
 
                 var newPos = CachedTransform.position - CachedTransform.forward * dist;
                 camera.position = Vector3.Lerp(camera.position, newPos, Time.deltaTime * 10);
@@ -107,48 +90,13 @@ namespace DotOriko.Components {
                     } else Target.rotation = Quaternion.Euler(0, Target.eulerAngles.y, 0);
                 }
 
+                followTarget = Target;
                 var newY = Mathf.Lerp(Position.y, followTarget.position.y + curHeight, Time.deltaTime * yLerpSpeed);
                 Position = new Vector3(followTarget.position.x, newY, followTarget.position.z);
             } else {
                 try {
-                    ch = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMovement>();
-                    //followTarget = ch.Hips;
-                    Target = ch.transform;
-                    dialogTarget = Target.FindChild("DialogTarget");
+                    Target = GameObject.FindGameObjectWithTag("Player").transform;
                 } catch { };
-            }
-
-            GetObjectInFront();
-        }
-
-        private void GetObjectInFront() {
-            RaycastHit hit;
-            var point = new Vector2(Screen.width * .5f, Screen.height * .5f);
-            Ray ray = cameraComponent.ScreenPointToRay(point);
-
-            if (Physics.Raycast(ray, out hit, 1000, playerMask)) {
-                var obj = hit.collider.gameObject;
-                if (obj != objectInFront) {
-                    CheckForNPC(obj, objectInFront);
-
-                    objectInFront = obj;
-                    EventManager.Instance.Trigger("System.OnFrontObjectChanged", obj);
-                    if(obj) EventManager.Instance.Trigger("onFrontObjectChanged", obj.GetInstanceID());
-                }
-            } else objectInFront = null;
-        }
-
-        private void CheckForNPC(GameObject newO, GameObject lastO) {
-            if (newO) {
-                if (newO.tag == "NPC") {
-                    newO.GetComponent<Yandere.AI.NPCInteraction>().ShowInteractionLabel(true);
-                }
-            }
-
-            if (lastO) {
-                if (lastO.tag == "NPC") {
-                    lastO.GetComponent<Yandere.AI.NPCInteraction>().ShowInteractionLabel(false);
-                }
             }
         }
 
