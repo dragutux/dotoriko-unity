@@ -7,7 +7,7 @@ using System.IO;
 namespace DotOriko.Data {
 
     public enum StorageType {
-        Documents, Resources
+        Documents, Resources, StreamingAssets
     }
 
     public abstract class Config<TConfig> where TConfig : Config<TConfig> {
@@ -34,11 +34,26 @@ namespace DotOriko.Data {
                     Errors.Log("[Data Config Load] EXCEPTION: {0}", e.Message);
                 }
                 return Load(tAsset);
+
+            } else if (type == StorageType.StreamingAssets) {
+                TConfig config = null;
+                var data = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, name + EXTENTION));
+                config = JsonConvert.DeserializeObject<TConfig>(data);
+                config.OnRestored();
+                return config;
+
             } else if (type == StorageType.Documents) {
                 TConfig config = null;
-				var data = File.ReadAllText(Path.Combine(GetDocumentsPath(), name + EXTENTION));
-				config = JsonConvert.DeserializeObject<TConfig>(data);
-				config.OnRestored();
+                var path = Path.Combine(GetDocumentsPath(), name + EXTENTION);
+
+                if (!File.Exists(path)) {
+                    File.Create(path).Dispose();
+                    return null;
+                } else {
+                    var data = File.ReadAllText(path);
+                    config = JsonConvert.DeserializeObject<TConfig>(data);
+                    config.OnRestored();
+                }
                 return config;
             }
             return null;

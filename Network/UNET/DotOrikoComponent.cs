@@ -1,23 +1,11 @@
-﻿///
-/// DotOriko v1.0
-/// Physics object controller
-/// By NoxCaos 10.02.2016
-/// 
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 using System.Collections.Generic;
 
-namespace DotOriko {
-    /// <summary>
-    /// The basic class of all framework.
-    /// Use this component like a new base 
-    /// for all your scripts. It contains lots of 
-    /// useful stuff that MonoBehavior doesn't.
-    /// </summary>
-    public abstract class DotOrikoComponent : MonoBehaviour {
+namespace DotOriko.Network.UNET {
 
-        public static Dictionary<int, GameObject> InstanceMap = new Dictionary<int, GameObject>();
+    public class DotOrikoComponent : NetworkBehaviour {
 
         #region Vector3
         /// <summary>
@@ -26,7 +14,8 @@ namespace DotOriko {
         public Vector3 Position {
             get {
                 return this.CachedTransform.position;
-            } set {
+            }
+            set {
                 this.CachedTransform.position = value;
             }
         }
@@ -51,7 +40,8 @@ namespace DotOriko {
         public Quaternion Rotation {
             get {
                 return this.CachedTransform.rotation;
-            } set {
+            }
+            set {
                 this.CachedTransform.rotation = value;
             }
         }
@@ -131,23 +121,13 @@ namespace DotOriko {
         /// <summary>
         /// Called when script is initialized
         /// </summary>
-        protected virtual void OnInitialize() {
-            var id = gameObject.GetInstanceID();
-            if (!InstanceMap.ContainsKey(id)) {
-                InstanceMap.Add(id, gameObject);
-            }
-        }
+        protected virtual void OnInitialize() { }
 
         /// <summary>
         /// Called when object is destroyed. 
         /// Don't forget to unsubscribe from events here
         /// </summary>
-        protected virtual void OnReleaseResources() {
-            var id = gameObject.GetInstanceID();
-            if (InstanceMap.ContainsKey(id)) {
-                InstanceMap.Remove(id);
-            }
-        }
+        protected virtual void OnReleaseResources() { }
         #endregion
 
         #region Protected methods
@@ -227,5 +207,6 @@ namespace DotOriko {
                 this.OnScheduledUpdate();
             }
         }
+
     }
 }
