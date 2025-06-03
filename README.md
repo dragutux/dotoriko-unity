@@ -1,3 +1,11 @@
+--- 2025 UPDATE ---
+
+This was originally a https://github.com/madebynoxc project (https://github.com/madebynoxc/dotoriko-unity).
+- I wanted people to take a note of that info since the original repository is out.
+
+-- PurringBytes formerly dragutux
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 # .Oriko - a Unity3D Framework
 
 Despite Unity is a massive game engine that contains a lot of stuff to make life of game developer easy, there are no some useful stuff that we use almost in every game.
